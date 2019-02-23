@@ -14,9 +14,7 @@ doc
   .text('Реши примеры без ошибок и получи звёздочку!', { align: 'center' });
 
 doc.fontSize(14);
-doc.moveDown();
-doc.moveDown();
-doc.moveDown();
+doc.moveDown(3);
 
 let i = 0;
 while (i < 7) {
