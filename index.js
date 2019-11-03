@@ -1,30 +1,13 @@
-const PDFDocument = require('pdfkit');
-const fs = require('fs');
-const uuidv4 = require('uuid/v4');
-const { makeRandomExampleRow } = require('./src/utils');
+const MathProblemsBook = require('./src/MathProblemsBook');
+const task1 = require('./src/problems/problem1');
+const task2 = require('./src/problems/problem2');
+const task3 = require('./src/problems/problem3');
 
-const outputFile = './output.pdf';
-const fontFile = './src/font.ttf';
+const problemsBook = new MathProblemsBook();
+problemsBook.addTitle('Заголовок');
 
-function getOutputFile() {
-  return `${uuidv4()}.pdf`;
-}
+problemsBook.addTask(task1, { repeatTimes: 3});
+problemsBook.addTask(task2, { repeatTimes: 4});
+problemsBook.addTask(task3, { repeatTimes: 4});
 
-const doc = new PDFDocument();
-doc.pipe(fs.createWriteStream(getOutputFile()));
-doc.font(fontFile);
-
-doc
-  .fontSize(18)
-  .text('Реши примеры без ошибок и получи звёздочку!', { align: 'center' });
-
-doc.fontSize(14);
-doc.moveDown(3);
-
-let i = 0;
-while (i < 7) {
-  makeRandomExampleRow(doc);
-  ++i;
-}
-
-doc.end();
+problemsBook.print();

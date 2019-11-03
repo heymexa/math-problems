@@ -1,2 +1,2 @@
-# math-exampes
-Math examples generator
+# math-problems
+Math problems generator

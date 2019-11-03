@@ -1,7 +1,7 @@
 {
-  "name": "math-examples",
-  "version": "0.0.2",
-  "description": "Math examples generator",
+  "name": "math-problems",
+  "version": "1.0.0",
+  "description": "Math problems generator",
   "main": "index.js",
   "keywords": [
     "math",
