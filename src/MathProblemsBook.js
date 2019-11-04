@@ -1,6 +1,7 @@
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
 const uuidv4 = require('uuid/v4');
+const path = require('path');
 const config = require('./config');
 
 class MathProblemsBook {
@@ -10,10 +11,11 @@ class MathProblemsBook {
       fontSize: 14,
       font: './src/font.ttf',
       titlePaddingBottom: 2,
-      paddingBottom: 0.5
+      paddingBottom: 0.5,
+      dist: './dist'
     };
     this.options = { ...defaultOptions, ...options };
-    this._tasks = [];
+    this._problems = [];
 
     this._init();
   }
@@ -31,27 +33,27 @@ class MathProblemsBook {
     this.doc.moveDown(this.options.titlePaddingBottom);
   }
 
-  addTask(task, options) {
-    this._tasks.push({ task, options });
+  addProblem(problem, options) {
+    this._problems.push({ problem, options });
   }
 
   _getOutputFile() {
-    return `${uuidv4()}.pdf`;
+    return path.join(this.options.dist, `${uuidv4()}.pdf`);
   }
 
-  _printTasks() {
+  _printProblems() {
     this.doc.fontSize(this.options.fontSize);
-    this._tasks.forEach((taskData, i) => {
-      const { task, options } = taskData;
-      const { paddingBottom:taskPaddingBottom } = task.options || {};
+    this._problems.forEach((problemData, i) => {
+      const { problem, options } = problemData;
+      const { paddingBottom:taskPaddingBottom } = problem.options || {};
       const { paddingBottom:defaultPaddingBottom } = this.options;
       const { repeatTimes } = options;
       const paddingBottom = taskPaddingBottom || defaultPaddingBottom;
-      this.doc.text(`${i + 1}. ${task.title}`);
+      this.doc.text(`${i + 1}. ${problem.title}`);
       this.doc.moveDown(defaultPaddingBottom);
       let count = repeatTimes;
       while (count > 0) {
-        this.doc.text(task.toString());
+        this.doc.text(problem.toString());
         this.doc.moveDown(paddingBottom);
         --count;
       }
@@ -61,7 +63,7 @@ class MathProblemsBook {
 
   print() {
     try {
-      this._printTasks();
+      this._printProblems();
       this.doc.end();
     } catch (error) {
       console.error(error);
